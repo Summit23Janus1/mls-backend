@@ -1,0 +1,67 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mls-mls-poi-backend-app-dev
+  annotations:
+    argocd/app-name: mls-mls-poi-backend-app-dev
+    backstage.io/kubernetes-id: mls-mls-poi-backend-app-dev
+    backstage.io/kubernetes-namespace: mls
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=mls-mls-poi-backend-app-dev'
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: Summit23Janus1/mls-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.summit23rock.n26o.p1.openshiftapps.com/dev-pipelines/ns/mls/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.summit23rock.n26o.p1.openshiftapps.com/k8s/ns/mls/deployments/mls-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.summit23rock.n26o.p1.openshiftapps.com/#https://github.com/Summit23Janus1/mls-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/movinglightspeed"
+  system: workshop-system-mls
+  providesApis:
+    - backend-api-mls
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-mls
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/movinglightspeed"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-mls
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://mls-poi-backend-app-mls.apps.summit23rock.n26o.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/Summit23Janus1/mls-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/movinglightspeed"
+  system: workshop-system-mls
+  definition:
+    $text: https://github.com/Summit23Janus1/mls-backend/tree/main/src/main/resources/META-INF/openapi.yaml
